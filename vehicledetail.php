@@ -45,11 +45,12 @@ if (isset($_POST['submit'])) {
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
     <!-- Font Awesome -->
 
+    <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script> -->
     
-    <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" /> -->
+
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.standalone.min.css">
     
     <title>Vehicle Details</title>
 </head>
@@ -103,10 +104,15 @@ if ($query->rowCount() > 0) {
                                     <!-- <div class="form-group">
                                         <input type="text" class="form-control" name="daterange" value="01/01/2018 - 01/15/2018" />
                                     </div> -->
-                                    <div class="input-group input-daterange">
+                                    <!-- <div class="input-group input-daterange">
                                         <input type="text" class="form-control" value="2012-04-05" name="fromdate">
                                         <div class="input-group-addon">to</div>
                                         <input type="text" class="form-control" value="2012-04-19" name="todate">
+                                    </div> -->
+                                    <div class="input-group input-daterange">
+                                        <input id="startDate" name="startDate" type="text" class="form-control" readonly="readonly">
+                                        <span class="input-group-addon">to</span>
+                                        <input id="endDate" name="endDate" type="text" class="form-control" readonly="readonly">
                                     </div>
                                     <br>
                                     <div class="form-group">
@@ -230,10 +236,15 @@ include('includes/contactus.php');
 <script src="assets/js/bootstrap.min.js"></script> 
 <script src="assets/js/jquery.min.js"></script> 
 
-<script>
-$('.input-daterange input').each(function() {
-    $(this).datepicker('clearDates');
-});
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.input-daterange').datepicker();
+        $('#startDate').click(function() {
+            $(this).datepicker('hide');
+            $('#endDate').focus()
+        });
+    });
 </script>
 
 </body>
