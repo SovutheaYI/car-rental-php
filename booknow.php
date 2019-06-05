@@ -39,10 +39,11 @@ if (isset($_POST['booknow'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
+
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.standalone.min.css">
 
 </head>
 <body>
@@ -57,19 +58,12 @@ if (isset($_POST['booknow'])) {
                         <div class="login_wrap">
                             <div class="col-md-12 col-sm-6">
                                 <form method="post">
-                                    <!-- <div class="form-group">
-                                        <input type="text" class="form-control" name="fromdate" placeholder="From Date(dd/mm/yyyy)*" required>
-    
+                                    <div class="input-group input-daterange">
+                                        <input id="startDate" name="startDate" type="text" class="form-control" readonly="readonly">
+                                        <span class="input-group-addon">to</span>
+                                        <input id="endDate" name="endDate" type="text" class="form-control" readonly="readonly">
                                     </div>
-                                    <div class="form-group">
-                                        <input type="text" name="todate" class="form-control" placeholder="To Date(dd/mm/yyyy)*" required>
-                                    </div> -->
-                                    <div class="form-group">
-
-                                        <input type="text" class="form-control" name="daterange" value="01/01/2018 - 01/15/2018" />
-                                    </div>
-                                    
-                                    
+                                    <br>
                                     <div class="form-group">
                                         <select name="pickup" id="" class="form-control" >
                                             <option value=""> Select </option>
@@ -105,28 +99,23 @@ if (isset($_POST['booknow'])) {
             </div>
         </div>
     </div>
-    
-
-<script>
-$(function() {
-  $('input[name="daterange"]').daterangepicker({
-    opens: 'left'
-  }, function(start, end, label) {
-    console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
-  });
-});
-</script>
-
 </body>
 </html>
 
 
-<script>
-function a() {
-    console.log("hello");
-    return "as";
-}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.input-daterange').datepicker({
+            datesDisabled:[new Date("06/20/2019"), new Date("06/23/2019")],
+        });
+        $('#startDate').click(function() {
+            $(this).datepicker('hide');
+            $('#endDate').focus()
+        });
+    });
 </script>
+
 
 <script>
     var disableDates = [];

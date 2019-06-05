@@ -95,55 +95,8 @@ if ($query->rowCount() > 0) {
                     <div class="col-md-3">
                         <div class="price_info" style="margin-top: 30px;">
                             <p>$<?php echo htmlentities($result->price);?> </p>Per Day<br><br>
-                            <!-- <button class="btn btn-primary" style="background-color: #18bc9c; border: none;"><a href="#bookingform" data-toggle="modal" style="color: white;" data-dismiss="modal">Book Now</a></button> -->
-                            <div class="sidebar_widget">
-                                <div class="widget_heading">
-                                    <h5><i class="fa fa-envelope" aria-hidden="true"></i>Book Now</h5>
-                                </div>
-                                <form method="post">
-                                    <!-- <div class="form-group">
-                                        <input type="text" class="form-control" name="daterange" value="01/01/2018 - 01/15/2018" />
-                                    </div> -->
-                                    <!-- <div class="input-group input-daterange">
-                                        <input type="text" class="form-control" value="2012-04-05" name="fromdate">
-                                        <div class="input-group-addon">to</div>
-                                        <input type="text" class="form-control" value="2012-04-19" name="todate">
-                                    </div> -->
-                                    <div class="input-group input-daterange">
-                                        <input id="startDate" name="startDate" type="text" class="form-control" readonly="readonly">
-                                        <span class="input-group-addon">to</span>
-                                        <input id="endDate" name="endDate" type="text" class="form-control" readonly="readonly">
-                                    </div>
-                                    <br>
-                                    <div class="form-group">
-                                        <select name="pickup" id="" class="form-control" >
-                                            <option value=""> Select </option>
-                                            <?php 
-                                                $ret1 = "SELECT id, name, address, city, managerName FROM tblStore";
-                                                $query1 = $dbh->prepare($ret1);
-                                                $query1->execute();
-                                                $results1 = $query1 -> fetchAll(PDO::FETCH_OBJ);
-                                                if ($query1->rowCount() > 0) {
-                                                    foreach ($results1 as $result1) { ?>
-                                                        <option value="<?php echo htmlentities($result1->id);?>"><?php echo htmlentities($result1->name); ?>, <?php echo htmlentities($result1->city); ?></option>
-                                            <?php
-                                                    }
-                                                }
-                                            ?>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <textarea rows="4" class="form-control" name="message" placeholder="Message*" required></textarea>
-                                    </div>
-                                    <?php if ($_SESSION['login']) { ?>
-                                    <div class="form-group">
-                                        <input type="submit" class="btn btn-block" name="booknow" style="background-color: #18bc9c; color: #fff;" value="Book Now">
-                                    </div>
-                                    <?php } else { ?>
-                                        <a href="#loginform" class="btn btn-xs uppercase" style="color: #fff;" data-toggle="modal" data-dismiss="modal">Login To Book</a>
-                                    <?php } ?>
-                                </form>
-                            </div>
+                            <button class="btn btn-primary" style="background-color: #18bc9c; border: none;"><a href="#bookingform" data-toggle="modal" style="color: white;" data-dismiss="modal">Book Now</a></button>
+
                         </div>
                     </div>
                 </div>
@@ -221,7 +174,7 @@ if ($query->rowCount() > 0) {
 
 
 <?php
-// include('booknow.php');
+include('booknow.php');
 include('includes/login.php');
 include('includes/signup.php');
 include('includes/footer.php');
