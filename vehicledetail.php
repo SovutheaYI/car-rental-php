@@ -2,32 +2,32 @@
 session_start();
 error_reporting(0);
 include ('includes/config.php');
-if (isset($_POST['submit'])) {
-    $fromDate = $_POST['fromdate'];
-    $toDate = $_POST['todate'];
-    $msg = $_POST['message'];
-    $user = $_SESSION['login'];
-    $vehicleId = $_GET['vehicleId'];
-    $pickup = $_POST['pickup'];
-    $status = 0;
-    $sql = "INSERT INTO tblBooking(vehicleId, email, fromDate, toDate, pickupPlace, message, statusId) 
-    VALUES(:vehicleId, :email, :fromDate, :toDate, :pickup, :msg, :status)";
-    $query = $dbh->prepare($sql);
-    $query->bindParam(':email', $user, PDO::PARAM_STR);
-    $query->bindParam(':vehicleId', $vehicleId, PDO::PARAM_STR);
-    $query->bindParam(':fromDate', $fromDate, PDO::PARAM_STR);
-    $query->bindParam(':toDate', $toDate, PDO::PARAM_STR);
-    $query->bindParam(':msg', $msg, PDO::PARAM_STR);
-    $query->bindParam(':pickup', $pickup, PDO::PARAM_STR);
-    $query->bindParam(':status', $status, PDO::PARAM_STR);
-    $query->execute();
-    $lastInsertId = $dbh->lastInsertId();
-    if ($lastInsertId) {
-        echo "<script>alert('Booking successfull.');</script>";
-    } else {
-        echo "<script>alert('Something went wrong. Please try again');</script>";
-    }
-}
+// if (isset($_POST['submit'])) {
+//     $fromDate = $_POST['fromdate'];
+//     $toDate = $_POST['todate'];
+//     $msg = $_POST['message'];
+//     $user = $_SESSION['login'];
+//     $vehicleId = $_GET['vehicleId'];
+//     $pickup = $_POST['pickup'];
+//     $status = 0;
+//     $sql = "INSERT INTO tblBooking(vehicleId, email, fromDate, toDate, pickupPlace, message, statusId) 
+//     VALUES(:vehicleId, :email, :fromDate, :toDate, :pickup, :msg, :status)";
+//     $query = $dbh->prepare($sql);
+//     $query->bindParam(':email', $user, PDO::PARAM_STR);
+//     $query->bindParam(':vehicleId', $vehicleId, PDO::PARAM_STR);
+//     $query->bindParam(':fromDate', $fromDate, PDO::PARAM_STR);
+//     $query->bindParam(':toDate', $toDate, PDO::PARAM_STR);
+//     $query->bindParam(':msg', $msg, PDO::PARAM_STR);
+//     $query->bindParam(':pickup', $pickup, PDO::PARAM_STR);
+//     $query->bindParam(':status', $status, PDO::PARAM_STR);
+//     $query->execute();
+//     $lastInsertId = $dbh->lastInsertId();
+//     if ($lastInsertId) {
+//         echo "<script>alert('Booking successfull.');</script>";
+//     } else {
+//         echo "<script>alert('Something went wrong. Please try again');</script>";
+//     }
+// }
 ?>
 
 <!DOCTYPE html>
@@ -47,6 +47,8 @@ if (isset($_POST['submit'])) {
 
     <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script> -->
     
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 
@@ -71,7 +73,7 @@ if ($query->rowCount() > 0) {
     foreach ($results as $result) {
         $_SESSION['brandId'] = $result->brandId; ?>
         
-        <div class="content-wrapper" style="margin-top: 60px;">
+        <div class="content-wrapper" style="margin-top: 90px;">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-4">
@@ -96,7 +98,6 @@ if ($query->rowCount() > 0) {
                         <div class="price_info" style="margin-top: 30px;">
                             <p>$<?php echo htmlentities($result->price);?> </p>Per Day<br><br>
                             <button class="btn btn-primary" style="background-color: #18bc9c; border: none;"><a href="#bookingform" data-toggle="modal" style="color: white;" data-dismiss="modal">Book Now</a></button>
-
                         </div>
                     </div>
                 </div>
@@ -170,35 +171,22 @@ if ($query->rowCount() > 0) {
 }
 ?>
         </section>
-
-
-
-<?php
-include('booknow.php');
-include('includes/login.php');
-include('includes/signup.php');
-include('includes/footer.php');
-include('includes/about.php');
-include('includes/services.php');
-include('includes/contactus.php');
-?>
-
-
 <!-- Scripts --> 
-
 <script src="assets/js/bootstrap.min.js"></script> 
 <script src="assets/js/jquery.min.js"></script> 
 
+<?php
+include ('booknow.php');
+include ('includes/login.php');
+include ('includes/signup.php');
+include ('includes/footer.php');
+include ('includes/about.php');
+include ('includes/services.php');
+include ('includes/contactus.php');
+?>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
-<script type="text/javascript">
-    $(document).ready(function() {
-        $('.input-daterange').datepicker();
-        $('#startDate').click(function() {
-            $(this).datepicker('hide');
-            $('#endDate').focus()
-        });
-    });
-</script>
 
 </body>
 </html>
+

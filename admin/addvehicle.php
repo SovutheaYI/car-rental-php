@@ -13,6 +13,7 @@ if (strlen($_SESSION['adminlogin']) == 0) {
         $seat = $_POST['seat'];
         $year = $_POST['year'];
         $brand = $_POST['brandId'];
+        $cartype = $_POST['carTypeId'];
         $store = $_POST['storeId'];
         $vimage1 = $_FILES["img1"]["name"];
         $vimage2 = $_FILES["img2"]["name"];
@@ -26,10 +27,11 @@ if (strlen($_SESSION['adminlogin']) == 0) {
         move_uploaded_file($_FILES["img2"]["tmp_name"],"img/vehicle/".$_FILES["img2"]["name"]);
         move_uploaded_file($_FILES["img3"]["tmp_name"],"img/vehicle/".$_FILES["img3"]["name"]);
 
-        $sql = "INSERT INTO tblVehicle(brandId, storeId, vehicleTitle, overview, price, type, seat, year, img1, img2, img3, airCon, leatherSeat, airBag, cdPlayer, sensorCrash) VALUES(:brand, :store, :title, :overview, :price, :type, :seat, :year, :img1, :img2, :img3, :air, :leather, :bag, :cd, :sensor)";
+        $sql = "INSERT INTO tblVehicle(brandId, storeId, carTypeId, vehicleTitle, overview, price, type, seat, year, img1, img2, img3, airCon, leatherSeat, airBag, cdPlayer, sensorCrash) VALUES(:brand, :store, :cartype, :title, :overview, :price, :type, :seat, :year, :img1, :img2, :img3, :air, :leather, :bag, :cd, :sensor)";
         $query = $dbh->prepare($sql);
         $query->bindParam(':brand', $brand, PDO::PARAM_STR);
         $query->bindParam(':store', $store, PDO::PARAM_STR);
+        $query->bindParam(':cartype', $cartype, PDO::PARAM_STR);
         $query->bindParam(':title', $vehicle_title, PDO::PARAM_STR);
         $query->bindParam(':overview', $overview, PDO::PARAM_STR);
         $query->bindParam(':price', $price, PDO::PARAM_STR);
@@ -116,7 +118,7 @@ if (strlen($_SESSION['adminlogin']) == 0) {
                                                 <select class="selectpicker" name="brandId" required>
                                                     <option value=""> Select </option>
                                                     <?php 
-                                                        $ret= "SELECT id, brandName FROM tblBrand";
+                                                        $ret = "SELECT id, brandName FROM tblBrand";
                                                         $query = $dbh->prepare($ret);
                                                         $query->execute();
                                                         $results = $query -> fetchAll(PDO::FETCH_OBJ);
@@ -134,7 +136,7 @@ if (strlen($_SESSION['adminlogin']) == 0) {
                                                 <select class="selectpicker" name="storeId" required>
                                                     <option value=""> Select </option>
                                                     <?php 
-                                                        $ret= "SELECT id, name, address, city, managerName FROM tblStore";
+                                                        $ret = "SELECT id, name, address, city, managerName FROM tblStore";
                                                         $query = $dbh->prepare($ret);
                                                         $query->execute();
                                                         $results = $query -> fetchAll(PDO::FETCH_OBJ);
@@ -160,13 +162,31 @@ if (strlen($_SESSION['adminlogin']) == 0) {
                                             <div class="col-sm-4">
                                                 <input type="text" name="price" class="form-control" required>
                                             </div>
-                                            <label class="col-sm-2 control-label">Fuel Type<span style="color:red">*</span></label>
-                                            <div class="col-sm-4">
+                                            <label class="col-sm-1 control-label">Fuel Type<span style="color:red">*</span></label>
+                                            <div class="col-sm-2">
                                                 <select class="selectpicker" name="type" required>
                                                     <option value=""> Select </option>
                                                     <option value="Petrol">Petrol</option>
                                                     <option value="Diesel">Diesel</option>
                                                     <option value="CNG">CNG</option>
+                                                </select>
+                                            </div>
+                                            <label class="col-sm-1 control-label">Car Type<span style="color:red">*</span></label>
+                                            <div class="col-sm-2">
+                                                <select class="selectpicker" name="carTypeId" required>
+                                                    <option value=""> Select </option>
+                                                    <?php 
+                                                        $ret= "SELECT * FROM tblCarType";
+                                                        $query = $dbh->prepare($ret);
+                                                        $query->execute();
+                                                        $results = $query -> fetchAll(PDO::FETCH_OBJ);
+                                                        if ($query->rowCount() > 0) {
+                                                            foreach ($results as $result) { ?>
+                                                                <option value="<?php echo htmlentities($result->id);?>"><?php echo htmlentities($result->carType); ?></option>
+                                                    <?php
+                                                            }
+                                                        }
+                                                    ?>
                                                 </select>
                                             </div>
                                         </div>

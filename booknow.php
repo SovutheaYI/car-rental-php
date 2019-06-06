@@ -1,17 +1,16 @@
 <?php 
 session_start();
 include('includes/config.php');
-error_reporting(0);
 if (isset($_POST['booknow'])) {
-    $fromDate = $_POST['fromdate'];
-    $toDate = $_POST['todate'];
+    $fromDate = $_POST['startDate'];
+    $toDate = $_POST['endDate'];
     $msg = $_POST['message'];
     $user = $_SESSION['login'];
     $vehicleId = $_GET['vehicleId'];
     $pickup = $_POST['pickup'];
     $status = 0;
-    $sql = "INSERT INTO tblBooking(vehicleId, email, fromDate, toDate, pickupPlace, message, statusId) 
-    VALUES(:vehicleId, :email, :fromDate, :toDate, :pickup, :msg, :status)";
+    $sql = "INSERT INTO tblBooking(vehicleId, email, fromDate, toDate, storeId, message) 
+    VALUES(:vehicleId, :email, :fromDate, :toDate, :pickup, :msg)";
     $query = $dbh->prepare($sql);
     $query->bindParam(':email', $user, PDO::PARAM_STR);
     $query->bindParam(':vehicleId', $vehicleId, PDO::PARAM_STR);
@@ -19,7 +18,6 @@ if (isset($_POST['booknow'])) {
     $query->bindParam(':toDate', $toDate, PDO::PARAM_STR);
     $query->bindParam(':msg', $msg, PDO::PARAM_STR);
     $query->bindParam(':pickup', $pickup, PDO::PARAM_STR);
-    $query->bindParam(':status', $status, PDO::PARAM_STR);
     $query->execute();
     $lastInsertId = $dbh->lastInsertId();
     if ($lastInsertId) {
@@ -38,13 +36,6 @@ if (isset($_POST['booknow'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.standalone.min.css">
-
 </head>
 <body>
     <div class="modal fade" id="bookingform">
@@ -58,13 +49,19 @@ if (isset($_POST['booknow'])) {
                         <div class="login_wrap">
                             <div class="col-md-12 col-sm-6">
                                 <form method="post">
-                                    <div class="input-group input-daterange">
+                                    
+                                    <button id="btn" class="btn btn-primary" style="margin-top: -30px; background-color: #18bc9c; border: none;">Choose Date</button>
+                                    
+                                    <div id="date"></div>
+                                    
+                                    <!-- <div class="input-group input-daterange">
                                         <input id="startDate" name="startDate" type="text" class="form-control" readonly="readonly">
                                         <span class="input-group-addon">to</span>
                                         <input id="endDate" name="endDate" type="text" class="form-control" readonly="readonly">
-                                    </div>
+                                    </div> -->
                                     <br>
-                                    <div class="form-group">
+                                    
+                                    <div class="form-group" style="margin-top: -10px;">
                                         <select name="pickup" id="" class="form-control" >
                                             <option value=""> Select </option>
                                             <?php 
@@ -99,25 +96,12 @@ if (isset($_POST['booknow'])) {
             </div>
         </div>
     </div>
+
 </body>
 </html>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
-<script type="text/javascript">
-    $(document).ready(function() {
-        $('.input-daterange').datepicker({
-            datesDisabled:[new Date("06/20/2019"), new Date("06/23/2019")],
-        });
-        $('#startDate').click(function() {
-            $(this).datepicker('hide');
-            $('#endDate').focus()
-        });
-    });
-</script>
-
-
-<script>
+<!-- <script>
     var disableDates = [];
     var from = moment().subtract(10, 'days').toDate();
     var to = new Date();
@@ -126,7 +110,42 @@ if (isset($_POST['booknow'])) {
         from = moment(from).add(1, 'days').toDate();
     }
     console.log(disableDates);
+</script> -->
+
+
+
+<script>
+    function getSubCategory(val) {
+        $.ajax({
+            type: "POST",
+            url: "getdisabledates.php",
+            data:'vehicleid=' + val,
+            success: function(data) {
+                $("#date").html(data);
+                $("#btn").hide();
+                $("#date").css("margin-top", "-46px");
+            }
+        });
+    }
 </script>
+
+
+<script>
+var el = document.getElementById('btn');
+el.addEventListener('click', function() {
+    return getSubCategory('<?php echo $vehicleId; ?>');
+});
+</script>
+
+<!-- <script type="text/javascript">
+    $(document).ready(function() {
+        $('.input-daterange').datepicker();
+        $('#startDate').click(function() {
+            $(this).datepicker('hide');
+            $('#endDate').focus()
+        });
+    });
+</script> -->
 
 <?php include('includes/login.php');
 include('includes/signup.php'); ?>
